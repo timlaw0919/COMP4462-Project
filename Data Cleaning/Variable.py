@@ -1,6 +1,6 @@
 import sys
 
-# Constants: Top k countries will be limited to maximum 50
+# Constants: Top k countries will be limited to maximum 30
 TOPKCOUNTRIES = 30
 
 # Constants: List of years

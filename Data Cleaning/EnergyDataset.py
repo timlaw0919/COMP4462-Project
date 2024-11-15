@@ -18,6 +18,15 @@ def getSubsetData(iso_code_list, dataList, year):
 
     return data[(data['iso_code'].isin(iso_code_list)) & (data['Year'] == year)].drop(columns=['GDP', 'iso_code', 'population'])
 
+def dataSummingAndRemoving(subset_data):
+    new_data = []
+    for data in subset_data:
+        data = data[['Country', 'Year', 'biofuel_consumption', 'coal_consumption', 'fossil_fuel_consumption', 'gas_consumption', 'hydro_consumption', 'low_carbon_consumption', 'nuclear_consumption', 'oil_consumption', 'other_renewable_consumption', 'renewables_consumption', 'solar_consumption', 'wind_consumption']]
+        sumData = data.copy()
+        sumData['total_consumption'] = data.iloc[:, 2:].sum(axis=1)
+        new_data.append(sumData)
+    return new_data
+
 # Missing values handling
 def missingValuesHandling(data):
     data = data.fillna(0)
@@ -39,6 +48,7 @@ def main(iso_code_list, yearList):
 
     for i, year in enumerate(yearList):
         subset_data.append(getSubsetData(iso_code_list, data, year))
+        subset_data = dataSummingAndRemoving(subset_data)
         Utilities.storeDataInYears(missingValuesHandling(subset_data[i].drop(columns = ['Year'])), "Energy Consumption", year)
     
     Utilities.storeDataInYears(missingValuesHandling(pd.concat(subset_data)), "Energy Consumption", '2015-2022')
