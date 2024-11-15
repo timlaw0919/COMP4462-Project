@@ -4,9 +4,9 @@ import numpy as np
 
 # Load the functions
 def functionLoader():
-    global EnergyDataset, HappinessIndex, CPI, UnploymentRate, HDI, Variable, AirPollutants, GDP, Utilities
+    global EnergyDataset, HappinessIndex, CPI, UnploymentRate, HDI, Variable, AirPollutants, GDP, Utilities, DataConcat
     sys.path.append(sys.path[0] + "/..")
-    import EnergyDataset, HappinessIndex, CPI, UnploymentRate, HDI, Variable, AirPollutants, GDP, Utilities
+    import EnergyDataset, HappinessIndex, CPI, UnploymentRate, HDI, Variable, AirPollutants, GDP, Utilities, DataConcat
 
 def topKCountriesList():
     return Utilities.extractTopKCountries(np.minimum(topKCountries, 30))
@@ -26,3 +26,9 @@ if __name__ == "__main__":
     AirPollutants.main(country_list, yearList)
     GDP.main(country_list, yearList)
     EnergyDataset.main(iso_code_list, yearList)
+
+    # Concatenate the data
+    DataConcat.main("Task 4 Energy Data", Variable.TASK4ENERGYDATA)
+    DataConcat.main("Task 4 Happiness Data", Variable.TASK4HAPPINESSDATA)
+    DataConcat.main("Task 5 Energy Data", Variable.TASK5ENERGYDATA)
+    DataConcat.main("Task 5 Happiness Data", Variable.TASK5HAPPINESSDATA)

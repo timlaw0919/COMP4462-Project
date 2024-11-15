@@ -39,3 +39,11 @@ def extractTopKCountries(k):
 def storeDataInYears(df, df_name, year):
     os.makedirs(sys.path[0] + f"/../Cleaned Data/{year}", exist_ok = True)
     df.to_csv(sys.path[0] + f"/../Cleaned Data/{year}/{df_name}.csv", index = False)
+
+# Concatenate the data
+def dataConcatenation(data_list):
+    concatenated_data = data_list[0]
+    for data in data_list[1 : ]:
+        concatenated_data = pd.merge(concatenated_data, data, on = ['Country', 'Year'], how = 'outer')
+    
+    return concatenated_data    
