@@ -15,9 +15,11 @@ UNEMPLOYMENTSPECIFICFILENAME = 'D4_UnemployedRate.csv'
 HDISPECIFICFILENAME = 'D5_HumanDevelopmentIndex.csv'
 AIRPOLLUTANTSSPECIFICFILENAME = 'D6_AirPollutants.csv'
 GDPSPECIFICFILENAME = 'D1_EnergyConsumption.csv'
+AIRQUALITYSPECIFICFILENAME = 'D7_AirQuality.csv'
 
 CONCATFOLDERPATH = sys.path[0] + "/../Cleaned Data/2015-2022"
 
+TASK1DATA = ['Energy Consumption.csv', 'Happiness Index.csv']
 TASK4ENERGYDATA = ['CPI.csv', 'Unemployed Rate.csv', 'GDP.csv', 'Energy Consumption.csv']
 TASK4HAPPINESSDATA = ['CPI.csv', 'Unemployed Rate.csv', 'GDP.csv', 'Happiness Index.csv']
 TASK5ENERGYDATA = ['Human Development Index.csv', 'Energy Consumption.csv']
