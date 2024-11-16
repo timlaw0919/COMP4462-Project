@@ -8,17 +8,16 @@ def functionLoader():
     import Utilities, LargeMain, Variable
 
 def getSubsetData(country_list, dataList, year):
-    # Assume dataList is a list of DataFrames
+
     data = dataList[0]
 
     data = data.fillna(0)
     
-    # Check if the 'version' column exists
     if 'version' in data.columns:
-        # Filter rows where the 'version' starts with 'V6.0'
         data = data[data['version'].str.strip().str.startswith('V6.0', na=False)]
+
+    # print(data['version'])
     
-    # Proceed with your existing logic
     for index, data in enumerate(dataList):
         present_countries = data['Country'].unique()
         missing_countries = [country for country in country_list if country not in present_countries]
@@ -33,10 +32,27 @@ def getSubsetData(country_list, dataList, year):
     # Calculate the total air pollutants concentration
     numeric_columns = subset.select_dtypes(include=['number']).columns
     subset.loc[:, 'Total Air Pollutants Concentration'] = subset[numeric_columns].sum(axis=1)
-    
+
+    mapping = {}
+    for country in country_list:
+        mapping[country] = len(subset[subset['Country'] == country].index)
+
     subset = subset.groupby('Country', as_index = False).sum()
-    
-    # Add the year column back to the DataFrame
+
+    for country in country_list:
+        subset.loc[subset['Country'] == country, 'Average pm10_concentration'] = (
+            subset['pm10_concentration'] / mapping[country]
+        )
+        subset.loc[subset['Country'] == country, 'Average pm25_concentration'] = (
+            subset['pm25_concentration'] / mapping[country]
+        )
+        subset.loc[subset['Country'] == country, 'Average no2_concentration'] = (
+            subset['no2_concentration'] / mapping[country]
+        )
+        subset.loc[subset['Country'] == country, 'Average Air Pollutants Concentration'] = (
+            subset['Total Air Pollutants Concentration'] / mapping[country]
+        )
+
     subset = subset.assign(Year=year)
 
     return subset

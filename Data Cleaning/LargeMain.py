@@ -19,7 +19,7 @@ if __name__ == "__main__":
     topKCountries, yearList = Variable.TOPKCOUNTRIES, Variable.YEARLIST
     country_list, iso_code_list = topKCountriesList()
 
-    HappinessIndex.main(country_list, yearList)
+    # HappinessIndex.main(country_list, yearList)
     CPI.main(iso_code_list, yearList)
     UnploymentRate.main(iso_code_list, yearList)
     HDI.main(iso_code_list, yearList)
