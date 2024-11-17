@@ -16,7 +16,7 @@ def getSubsetData(iso_code_list, dataList, year):
     if missing_countries:
         print(f"Human Development Index -> Missing countries in dataset {missing_countries}")
 
-    return data[(data['iso_code'].isin(iso_code_list)) & (data['Year'] == year)].drop(columns=['GDP', 'iso_code', 'population'])
+    return data[(data['iso_code'].isin(iso_code_list)) & (data['Year'] == year)].drop(columns=['GDP', 'iso_code', 'Population'])
 
 def dataSummingAndRemoving(subset_data):
     new_data = []

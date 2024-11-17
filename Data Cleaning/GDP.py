@@ -16,9 +16,11 @@ def getSubsetData(country_list, dataList, year):
     missing_countries = [country for country in country_list if country not in present_countries]
     if missing_countries:
         print(f"GDP -> Missing countries in dataset: {missing_countries}")
+
+    data.loc[:, 'GDP per Capita'] = data['GDP'] / data['Population']
     
     # print(data.columns)
-    return data[(data['Country'].isin(country_list)) & (data['Year'] == year)][['Country', 'GDP']].assign(**{'Year': year})
+    return data[(data['Country'].isin(country_list)) & (data['Year'] == year)][['Country', 'GDP', 'GDP per Capita']].assign(**{'Year': year})
 
 # Main called by main.py to handle the data cleaning in the GDP Dataset
 def main(country_list, yearList):
@@ -30,6 +32,6 @@ def main(country_list, yearList):
 
     for i, year in enumerate(yearList):
         subset_data.append(getSubsetData(country_list, data, year))
-        Utilities.storeDataInYears(subset_data[i][['Country', 'GDP']], "GDP", year)
+        Utilities.storeDataInYears(subset_data[i][['Country', 'GDP', 'GDP per Capita']], "GDP", year)
     
     Utilities.storeDataInYears(pd.concat(subset_data), "GDP", '2015-2022')
