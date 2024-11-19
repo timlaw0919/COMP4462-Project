@@ -3,87 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Node-Link Diagram</title>
+    <title>Visualization</title>
     <style>
-        .node {
-            cursor: pointer;
-            stroke: #fff;
-            stroke-width: 1.5px;
-        }
-        .link {
-            fill: none;
-            stroke-width: 2px;
-        }
-        .label {
-            font-size: 12px;
-            fill: #333;
-        }
-        .tooltip {
-            position: absolute;
-            text-align: center;
-            width: auto;
-            height: auto;
-            padding: 5px;
-            font: 12px sans-serif;
-            background: lightsteelblue;
-            border: 0px;
-            border-radius: 8px;
-            pointer-events: none;
+        svg {
+            border: 1px solid black;
         }
     </style>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-    <svg width="800" height="600"></svg>
+    <svg width="250" height="220"></svg>
     <script>
         const initialData = {
             nodes: [
-                { id: 'energy_consumption', group: 'overview', fx: 250, fy: 300},
-                { id: 'happiness_score', group: 'overview', fx: 540, fy: 300 },
-                { id: 'pollution', group: 'overview', fx: 400 },
-                { id: 'finance', group: 'overview', fx:400 },
-                { id: 'living_quality', group: 'overview', fx: 400 }
+                { id: 'Energy Consumption', group: 'overview', fx: 40, fy: 130},
+                { id: 'Happiness', group: 'overview', fx: 200, fy: 130 },
+                { id: 'Pollution', group: 'overview', fx: 120 },
+                { id: 'Finance', group: 'overview', fx:120 },
+                { id: 'LivingQuality', group: 'overview', fx: 120 }
             ],
             links: [
-                { source: 'energy_consumption', target: 'pollution', value: 0.201 },
-                { source: 'energy_consumption', target: 'finance', value: 0.457 },
-                { source: 'energy_consumption', target: 'living_quality', value: -0.006 },
-                { source: 'happiness_score', target: 'pollution', value: -0.635 },
-                { source: 'happiness_score', target: 'finance', value: 0.170 },
-                { source: 'happiness_score', target: 'living_quality', value: 0.797 }
+                { source: 'Energy Consumption', target: 'Pollution', value: 0.201 },
+                { source: 'Energy Consumption', target: 'Finance', value: 0.457 },
+                { source: 'Energy Consumption', target: 'LivingQuality', value: -0.006 },
+                { source: 'Happiness', target: 'Pollution', value: -0.635 },
+                { source: 'Happiness', target: 'Finance', value: 0.170 },
+                { source: 'Happiness', target: 'LivingQuality', value: 0.797 }
             ]
         };
 
         const subData = {
-            pollution: [
-                { id: 'air_pollutants', group: 'subfactor', fx: 400 }
+            Pollution: [
+                { id: 'Air Pollutants', group: 'subfactor', fx: 120 }
             ],
-            finance: [
-                { id: 'gdp', group: 'subfactor', fx: 400 },
-                { id: 'unemployed_rate', group: 'subfactor' , fx: 400},
-                { id: 'cpi', group: 'subfactor', fx: 400 }
+            Finance: [
+                { id: 'GDP', group: 'subfactor', fx: 120 },
+                { id: 'Unemployed Rate', group: 'subfactor' , fx: 120},
+                { id: 'CPI', group: 'subfactor', fx: 120 }
             ],
-            living_quality: [
-                { id: 'human_development_index', group: 'subfactor', fx: 400}
+            LivingQuality: [
+                { id: 'HDI', group: 'subfactor', fx: 120}
             ]
         };
 
         const subLinks = {
-            pollution: [
-                { source: 'energy_consumption', target: 'air_pollutants', value: 0.201 },
-                { source: 'happiness_score', target: 'air_pollutants', value: -0.635 }
+            Pollution: [
+                { source: 'Energy Consumption', target: 'Air Pollutants', value: 0.201 },
+                { source: 'Happiness', target: 'Air Pollutants', value: -0.635 }
             ],
-            finance: [
-                { source: 'energy_consumption', target: 'gdp', value: 0.979 }, 
-                { source: 'energy_consumption', target: 'unemployed_rate', value: -0.088 },
-                { source: 'energy_consumption', target: 'cpi', value: -0.070 },
-                { source: 'happiness_score', target: 'gdp', value: 0.751 },
-                { source: 'happiness_score', target: 'unemployed_rate', value: -0.043 },
-                { source: 'happiness_score', target: 'cpi', value: -0.436 }
+            Finance: [
+                { source: 'Energy Consumption', target: 'GDP', value: 0.979 }, 
+                { source: 'Energy Consumption', target: 'Unemployed Rate', value: -0.088 },
+                { source: 'Energy Consumption', target: 'CPI', value: -0.070 },
+                { source: 'Happiness', target: 'GDP', value: 0.751 },
+                { source: 'Happiness', target: 'Unemployed Rate', value: -0.043 },
+                { source: 'Happiness', target: 'CPI', value: -0.436 }
             ],
-            living_quality: [
-                { source: 'energy_consumption', target: 'human_development_index', value: -0.006 },
-                { source: 'happiness_score', target: 'human_development_index', value: 0.797 }
+            LivingQuality: [
+                { source: 'Energy Consumption', target: 'HDI', value: -0.006 },
+                { source: 'Happiness', target: 'HDI', value: 0.797 }
             ]
         };
 
@@ -93,20 +71,19 @@
 
         const color = d => {
             switch (d.id) {
-                case 'energy_consumption': return '#228d84';
-                case 'happiness_score': return '#bf5c0d';
-                case 'pollution':
-                case 'finance':
-                case 'living_quality': return '#7030a0';
+                case 'Energy Consumption': return '#228d84';
+                case 'Happiness': return '#bf5c0d';
+                case 'Pollution':
+                case 'Finance':
+                case 'LivingQuality': return '#7030a0';
                 default: return '#dac8e8';
             }
         };
 
         const simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().id(d => d.id).distance(150)) // Increase distance
-            // .force("charge", d3.forceManyBody().strength(-300)) // Reduce charge strength
-            .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("collision", d3.forceCollide().radius(20)); // Add collision force
+            .force("link", d3.forceLink().id(d => d.id).distance(80)) // Increase distance
+            // .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("collision", d3.forceCollide().radius(16)); // Add collision force
 
         let data = JSON.parse(JSON.stringify(initialData));
 
@@ -125,9 +102,18 @@
                 .attr("class", "link")
                 .style("stroke-width", d => Math.abs(d.value) * 5)
                 .style("stroke", d => d.value > 0 ? "green" : "red")
+
+            const linkOverlay = svg.append("g")
+                .attr("class", "link-overlays")
+                .selectAll("line")
+                .data(data.links)
+                .enter().append("line")
+                .attr("class", "link-overlay")
+                .style("stroke-width", 10) 
+                .style("stroke", "transparent")
                 .on("mouseover", function(event, d) {
                     tooltip.transition().duration(200).style("opacity", .9);
-                    tooltip.html(`Source: ${d.source.id}<br>Target: ${d.target.id}<br>Pearson: ${d.value}`)
+                    tooltip.html(`${d.source.id} - ${d.target.id}<br>Correlation (Pearson): ${d.value}`)
                         .style("left", (event.pageX + 5) + "px")
                         .style("top", (event.pageY - 28) + "px");
                 })
@@ -135,18 +121,19 @@
                     tooltip.transition().duration(500).style("opacity", 0);
                 });
 
+
             const node = svg.append("g")
                 .attr("class", "nodes")
                 .selectAll("circle")
                 .data(data.nodes)
                 .enter().append("circle")
                 .attr("class", "node")
-                .attr("r", 10)
+                .attr("r", 5)
                 .attr("fill", color)
                 .on("click", clicked)
                 .call(d3.drag()
                     .on("start", dragstarted)
-                    .on("drag", dragged)
+                    // .on("drag", dragged)
                     .on("end", dragended));
 
             node.append("title")
@@ -159,6 +146,8 @@
                 .enter().append("text")
                 .attr("class", "label")
                 .attr("dy", -15)
+                .attr("dx", -20)
+                .attr("font-size", "8px")
                 .text(d => d.id);
 
             simulation
@@ -170,6 +159,12 @@
 
             function ticked() {
                 link
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
+                
+                linkOverlay
                     .attr("x1", d => d.source.x)
                     .attr("y1", d => d.source.y)
                     .attr("x2", d => d.target.x)
