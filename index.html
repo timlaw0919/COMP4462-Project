@@ -1,0 +1,242 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Judson:wght@400;700&amp;display=swap" rel="stylesheet">
+    <title>Energy Consumption and Happiness</title>
+
+    <style>
+        body {
+            font-family: 'Judson', serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        h1 span {
+            color: #3182ce;
+        }
+        .container {
+            display: flex;
+            width: 90%;
+            margin: 20px auto;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+        .sidebar {
+            flex: 1;
+            margin-right: 20px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+        .content {
+            flex: 3;
+        }
+        .content h2 {
+            font-weight: bold;
+            color: #333;
+        }
+        .content p {
+            margin-top: 10px;
+        }
+        .highlight {
+            color: #3182ce;
+            font-weight: bold;
+        }
+        .more-info {
+            margin-top: 40px;
+        }
+        .more-info h3 {
+            font-weight: bold;
+            color: #333;
+        }
+        .more-info p {
+            margin-bottom: 10px;
+        }
+        .keywords {
+            color: #3182ce;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        .sidebar ul li ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        .placeholder {
+            background-color: #f0f0f0;
+            height: 150px;
+            margin: 30px;
+            text-align: center;
+            line-height: 150px;
+            color: #aaa;
+        }
+        .related-terms, .same-terms, .conclusion {
+            margin-top: 40px;
+            scroll-behavior: smooth;
+        }
+        .related-terms h2, .same-terms h2, .conclusion h2 {
+            font-weight: bold;
+            color: #333;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card h3 {
+            color: #3182ce;
+            font-weight: bold;
+            margin-top: 0;
+        }
+        .card p {
+            margin-bottom: 10px;
+        }
+        .conclusion {
+            padding: 20px;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+    <script type="module" src="https://embedding.tableauusercontent.com/tableau.embedding.3.1.0.min.js"></script>
+</head>
+<body>
+    <h1>If a country has higher <span class="highlight">Energy Consumption</span>, will people there <span class="highlight">Happier</span>?</h1>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li>Our Questions + Insight from the graph</li>
+                <li>More Prove
+                    <ul>
+                        <li><a href="#EnergyCon">Energy Consumption &amp; its related Terms</a></li>
+                        <li><a href="#Happy">Same terms &amp; Happiness</a></li>
+                    </ul>
+                </li>
+                <li><a href="#conclusion">Conclusion</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <h2>Our Question + Insight from the graph</h2>
+            <p>
+                Imagine a country with abundant energy resources. Does this mean its people are happier? Let’s explore this intriguing question through different data visualizations.
+            </p>
+            <p>
+                This map highlights the relationship between <span class="highlight">energy consumption</span> and <span class="highlight">happiness</span> across regions. Preliminary findings suggest a <span class="highlight">positive correlation</span>.
+            </p>
+
+            <div>
+                <tableau-viz id="tableauYeungYuet"       
+                    src='https://public.tableau.com/views/Task1_17319395106370/Dashboard2?:language=en-GB&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'>
+                  </tableau-viz> <!--Task1-->
+            </div>
+
+            <div class="more-info">
+                <h3>More Prove</h3>
+                <p>
+                    Why Might More Energy Consumption (Not) Make People Happy? To dive deeper, let’s look into the key-words of it. The word cluster reveals that "<span class="keywords">Energy Consumption</span>" frequently connects with terms like "<span class="keywords">Environment</span>," "<span class="keywords">Finance</span>," and "<span class="keywords">Living Quality</span>."
+                </p>
+                  <tableau-viz id="tableauViz"       
+                    src='https://public.tableau.com/views/test_17312208082400/Sheet1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'> <!--Task2-->
+                  </tableau-viz>
+                <p><span class="keywords">Environment</span>: High energy use often impacts air quality and climate change.</p>
+                <p><span class="keywords">Finance</span>: Energy costs influence economic stability and household budgets.</p>
+                <p><span class="keywords">Living Quality</span>: Access to energy affects comfort and convenience.</p>
+            </div>
+            <div class="related-terms">
+                <a name="EnergyCon"></a>
+                <h2>Energy Consumption &amp; its related Terms</h2>
+                <div class="card">
+                    <h3>Energy Consumption and Environment</h3>
+                    <p>The indexed line graph shows a <span class="highlight">positive correlation</span> between total energy consumption and Air quality.</p>
+                    <div>
+                        <tableau-viz id="tableauYeungYuet"       
+                            src='https://public.tableau.com/views/COMP4462ProjectTask3Energy/Sheet2?:language=zh-CN&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'> <!--Task3 EC vs air quality-->
+                          </tableau-viz>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Energy Consumption and Finance</h3>
+                    <p>Parallel coordinates demonstrate the correlation between GDP, unemployment rate, CPI, and energy consumption. These indicators are <span class="highlight">positively correlated</span>, suggesting economic growth might drive higher energy use.</p>
+                    <div>
+                        <tableau-viz id="tableauYeungYuet"       
+                            src='https://public.tableau.com/views/Task4EC/Sheet1?:language=en-GB&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'> <!--Task4 EC vs finance-->
+                          </tableau-viz>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Energy Consumption and Living Quality</h3>
+                    <p>Correlation analysis reveals a <span class="highlight">positive link</span> between HDI and energy consumption, indicating that more developed countries tend to consume more energy.</p>
+                    <div>
+                        <tableau-viz id="tableauYeungYuet"       
+                            src='https://public.tableau.com/views/Task5EC/Sheet1?:language=en-GB&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'> <!--Task5 EC vs living quality-->
+                          </tableau-viz>
+                    </div>
+                </div>
+            </div>
+            <div class="same-terms">
+                <a name="Happy"></a>
+                <h2>Same terms &amp; Happiness</h2>
+                <p>How Do "<span class="keywords">Environment</span>," "<span class="keywords">Finance</span>," and "<span class="keywords">Living Quality</span>" Relate to <span class="highlight">Happiness</span>?</p>
+                <div class="card">
+                    <h3>Happiness and Environment</h3>
+                    <p>?????</p>
+                    <div>
+                        <tableau-viz id="tableauYeungYuet"       
+                            src='https://public.tableau.com/views/COMP4462ProjectTask3Happiness/Sheet3?:language=zh-CN&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'> <!--Task3 Happiness vs air quality-->
+                          </tableau-viz>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Happiness and Finance</h3>
+                    <p>?????</p>
+                    <div>
+                        <tableau-viz id="tableauYeungYuet"       
+                            src='https://public.tableau.com/views/Task4Happiness/Sheet1?:language=en-GB&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'> <!--Task4 Happiness vs finance-->
+                          </tableau-viz>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Happiness and Living Quality</h3>
+                    <p>?????</p>
+                    <div>
+                        <tableau-viz id="tableauYeungYuet"       
+                            src='https://public.tableau.com/views/Task5Happiness/Sheet1?:language=en-GB&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'> <!--Task5 Happiness vs living quality-->
+                          </tableau-viz>
+                    </div>
+                </div>
+                <div class="conclusion">
+                    <div class="nodelink">
+                        <iframe = ></iframe>
+                    </div>
+                    <div class="conclusion-text">
+                        <p>From the above Visualizations, we can find out “Happiness” is xxxxxxxxxxxxx</p>
+                        <p>That is because people actually link “happiness” with “xxx” the most</p>
+                    </div>
+                    <div class="conclusion-placeholder">Conclusion Placeholder</div>
+                </div>
+            </div>
+            <div class="conclusion">
+                <a name="conclusion"></a>
+                <h2>Conclusion</h2>
+                <div>
+                    <tableau-viz id="tableauYeungYuet"       
+                        src='https://public.tableau.com/views/Task1_17319395106370/Dashboard2?:language=en-GB&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link'> <!--Task6 Conclusion-->
+                      </tableau-viz>
+                </div>
+                <p>The above Link-Node Graph reflects, xxxxxxxxxxxxxxxxxxxxxx.</p>
+                <p>So, energy consumption and happiness are correlated, true happiness depends on a complex interplay of factors beyond mere energy availability.</p>
+            </div>
+        </div>
+    </div>
+
+
+</body></html>
