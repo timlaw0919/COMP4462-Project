@@ -23,12 +23,12 @@
                 { id: 'LivingQuality', group: 'overview', fx: 120 }
             ],
             links: [
-                { source: 'Energy Consumption', target: 'Pollution', value: 0.201 },
-                { source: 'Energy Consumption', target: 'Finance', value: 0.457 },
-                { source: 'Energy Consumption', target: 'LivingQuality', value: -0.006 },
-                { source: 'Happiness', target: 'Pollution', value: -0.635 },
-                { source: 'Happiness', target: 'Finance', value: 0.170 },
-                { source: 'Happiness', target: 'LivingQuality', value: 0.797 }
+                { source: 'Energy Consumption', target: 'Pollution', value: 0.163 },
+                { source: 'Energy Consumption', target: 'Finance', value: 0.458 },
+                { source: 'Energy Consumption', target: 'LivingQuality', value: 0.685 },
+                { source: 'Happiness', target: 'Pollution', value: -0.703 },
+                { source: 'Happiness', target: 'Finance', value: 0.223 },
+                { source: 'Happiness', target: 'LivingQuality', value: 0.821 }
             ]
         };
 
@@ -48,20 +48,20 @@
 
         const subLinks = {
             Pollution: [
-                { source: 'Energy Consumption', target: 'Air Pollutants', value: 0.201 },
-                { source: 'Happiness', target: 'Air Pollutants', value: -0.635 }
+                { source: 'Energy Consumption', target: 'Air Pollutants', value: 0.163 },
+                { source: 'Happiness', target: 'Air Pollutants', value: -0.703 }
             ],
             Finance: [
-                { source: 'Energy Consumption', target: 'GDP', value: 0.979 }, 
-                { source: 'Energy Consumption', target: 'Unemployed Rate', value: -0.088 },
-                { source: 'Energy Consumption', target: 'CPI', value: -0.070 },
-                { source: 'Happiness', target: 'GDP', value: 0.751 },
-                { source: 'Happiness', target: 'Unemployed Rate', value: -0.043 },
-                { source: 'Happiness', target: 'CPI', value: -0.436 }
+                { source: 'Energy Consumption', target: 'GDP', value: 0.983 }, 
+                { source: 'Energy Consumption', target: 'Unemployed Rate', value: -0.102 },
+                { source: 'Energy Consumption', target: 'CPI', value: 0.016 },
+                { source: 'Happiness', target: 'GDP', value: 0.782 },
+                { source: 'Happiness', target: 'Unemployed Rate', value: 0.018 },
+                { source: 'Happiness', target: 'CPI', value: -0.303 }
             ],
             LivingQuality: [
-                { source: 'Energy Consumption', target: 'HDI', value: -0.006 },
-                { source: 'Happiness', target: 'HDI', value: 0.797 }
+                { source: 'Energy Consumption', target: 'HDI', value: 0.685 },
+                { source: 'Happiness', target: 'HDI', value: 0.821 }
             ]
         };
 
@@ -101,7 +101,11 @@
                 .enter().append("line")
                 .attr("class", "link")
                 .style("stroke-width", d => Math.abs(d.value) * 5)
-                .style("stroke", d => d.value > 0 ? "green" : "red")
+                .style("stroke", d => {
+                    if (d.value > 0.2) return "green";
+                    else if (d.value < -0.2) return "red";
+                    else return "grey";
+                })
 
             const linkOverlay = svg.append("g")
                 .attr("class", "link-overlays")
@@ -145,7 +149,7 @@
                 .data(data.nodes)
                 .enter().append("text")
                 .attr("class", "label")
-                .attr("dy", -15)
+                .attr("dy", -10)
                 .attr("dx", -20)
                 .attr("font-size", "8px")
                 .text(d => d.id);
