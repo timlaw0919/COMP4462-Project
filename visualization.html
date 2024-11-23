@@ -23,12 +23,12 @@
                 { id: 'LivingQuality', group: 'overview', fx: 120 }
             ],
             links: [
-                { source: 'Energy Consumption', target: 'Pollution', value: 0.163 },
-                { source: 'Energy Consumption', target: 'Finance', value: 0.458 },
-                { source: 'Energy Consumption', target: 'LivingQuality', value: 0.685 },
-                { source: 'Happiness', target: 'Pollution', value: -0.703 },
-                { source: 'Happiness', target: 'Finance', value: 0.223 },
-                { source: 'Happiness', target: 'LivingQuality', value: 0.821 }
+                { id: 'Energy Consumption - Pollution', source: 'Energy Consumption', target: 'Pollution', value: 0.163 },
+                { id: 'Energy Consumption - Fiance', source: 'Energy Consumption', target: 'Finance', value: 0.458 },
+                { id: 'Energy Consumption - LivingQuality', source: 'Energy Consumption', target: 'LivingQuality', value: 0.685 },
+                { id: 'Happiness - Pollution', source: 'Happiness', target: 'Pollution', value: -0.703 },
+                { id: 'Happiness - Fiance', source: 'Happiness', target: 'Finance', value: 0.223 },
+                { id: 'Happiness - LivingQuality', source: 'Happiness', target: 'LivingQuality', value: 0.821 }
             ]
         };
 
@@ -38,7 +38,7 @@
             ],
             Finance: [
                 { id: 'GDP', group: 'subfactor', fx: 120 },
-                { id: 'Unemployed Rate', group: 'subfactor' , fx: 120},
+                { id: 'Unemployment Rate', group: 'subfactor' , fx: 120},
                 { id: 'CPI', group: 'subfactor', fx: 120 }
             ],
             LivingQuality: [
@@ -48,20 +48,20 @@
 
         const subLinks = {
             Pollution: [
-                { source: 'Energy Consumption', target: 'Air Pollutants', value: 0.163 },
-                { source: 'Happiness', target: 'Air Pollutants', value: -0.703 }
+                { id: 'Energy Consumption - Air Pollutants', source: 'Energy Consumption', target: 'Air Pollutants', value: 0.163 },
+                { id: 'Happiness - Air Pollutants', source: 'Happiness', target: 'Air Pollutants', value: -0.703 }
             ],
             Finance: [
-                { source: 'Energy Consumption', target: 'GDP', value: 0.983 }, 
-                { source: 'Energy Consumption', target: 'Unemployed Rate', value: -0.102 },
-                { source: 'Energy Consumption', target: 'CPI', value: 0.016 },
-                { source: 'Happiness', target: 'GDP', value: 0.782 },
-                { source: 'Happiness', target: 'Unemployed Rate', value: 0.018 },
-                { source: 'Happiness', target: 'CPI', value: -0.303 }
+                { id: 'Energy Consumption - GDP', source: 'Energy Consumption', target: 'GDP', value: 0.983 }, 
+                { id: 'Energy Consumption - Unemployment Rate', source: 'Energy Consumption', target: 'Unemployment Rate', value: -0.102 },
+                { id: 'Energy Consumption - CPI', source: 'Energy Consumption', target: 'CPI', value: 0.016 },
+                { id: 'Happiness - GDP per capita', source: 'Happiness', target: 'GDP', value: 0.782 },
+                { id: 'Happiness - Unemployment Rate', source: 'Happiness', target: 'Unemployment Rate', value: 0.018 },
+                { id: 'Happiness - CPI', source: 'Happiness', target: 'CPI', value: -0.303 }
             ],
             LivingQuality: [
-                { source: 'Energy Consumption', target: 'HDI', value: 0.685 },
-                { source: 'Happiness', target: 'HDI', value: 0.821 }
+                { id: 'Energy Consumption per capita - HDI', source: 'Energy Consumption', target: 'HDI', value: 0.685 },
+                { id: 'Happiness - HDI', source: 'Happiness', target: 'HDI', value: 0.821 }
             ]
         };
 
@@ -117,7 +117,7 @@
                 .style("stroke", "transparent")
                 .on("mouseover", function(event, d) {
                     tooltip.transition().duration(200).style("opacity", .9);
-                    tooltip.html(`${d.source.id} - ${d.target.id}<br>Correlation (Pearson): ${d.value}`)
+                    tooltip.html(`${d.id}<br>Correlation (Pearson): ${d.value}`)
                         .style("left", (event.pageX + 5) + "px")
                         .style("top", (event.pageY - 28) + "px");
                 })
