@@ -15,15 +15,16 @@ def getSubsetData(iso_code_list, dataList, year):
     missing_countries = [code for code in iso_code_list if code not in present_countries]
     if missing_countries:
         print(f"Human Development Index -> Missing countries in dataset {missing_countries}")
-
-    return data[(data['iso_code'].isin(iso_code_list)) & (data['Year'] == year)].drop(columns=['GDP', 'iso_code', 'Population'])
+    data = data.fillna(0)
+    return data[(data['iso_code'].isin(iso_code_list)) & (data['Year'] == year)].drop(columns=['GDP', 'iso_code'])
 
 def dataSummingAndRemoving(subset_data):
     new_data = []
     for data in subset_data:
-        data = data[['Country', 'Year', 'biofuel_consumption', 'coal_consumption', 'fossil_fuel_consumption', 'gas_consumption', 'hydro_consumption', 'low_carbon_consumption', 'nuclear_consumption', 'oil_consumption', 'other_renewable_consumption', 'renewables_consumption', 'solar_consumption', 'wind_consumption']]
+        data = data[['Country', 'Population', 'Year', 'biofuel_consumption', 'coal_consumption', 'fossil_fuel_consumption', 'gas_consumption', 'hydro_consumption', 'low_carbon_consumption', 'nuclear_consumption', 'oil_consumption', 'other_renewable_consumption', 'renewables_consumption', 'solar_consumption', 'wind_consumption']]
         sumData = data.copy()
         sumData['total_consumption'] = data.iloc[:, 2:].sum(axis=1)
+        sumData.loc[:, 'Energy Consumption Per Capita'] = sumData['total_consumption'] / sumData['Population']
         new_data.append(sumData)
     return new_data
 

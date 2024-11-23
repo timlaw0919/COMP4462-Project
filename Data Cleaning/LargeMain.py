@@ -9,7 +9,7 @@ def functionLoader():
     import EnergyDataset, HappinessIndex, CPI, UnploymentRate, HDI, Variable, AirPollutants, GDP, Utilities, DataConcat, AirQuality
 
 def topKCountriesList():
-    return Utilities.extractTopKCountries(np.minimum(topKCountries, 30))
+    return Utilities.extractTopKCountries(np.minimum(topKCountries, 100))
 
 if __name__ == "__main__":
     functionLoader()
@@ -27,6 +27,7 @@ if __name__ == "__main__":
     GDP.main(country_list, yearList)
     EnergyDataset.main(iso_code_list, yearList)
     AirQuality.main(country_list, yearList)
+    HappinessIndex.main(country_list, yearList)
 
     # Concatenate the data
     DataConcat.main("Task 1", Variable.TASK1DATA)
