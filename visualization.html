@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualization</title>
+    <style>
+        svg {
+            border: 1px solid black;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <svg width="250" height="220"></svg>
+    <script>
+        const initialData = {
+            nodes: [
+                { id: 'Energy Consumption', group: 'overview', fx: 40, fy: 130},
+                { id: 'Happiness', group: 'overview', fx: 200, fy: 130 },
+                { id: 'Pollution', group: 'overview', fx: 120 },
+                { id: 'Finance', group: 'overview', fx:120 },
+                { id: 'LivingQuality', group: 'overview', fx: 120 }
+            ],
+            links: [
+                { id: 'Energy Consumption - Pollution', source: 'Energy Consumption', target: 'Pollution', value: 0.163 },
+                { id: 'Energy Consumption - Fiance', source: 'Energy Consumption', target: 'Finance', value: 0.458 },
+                { id: 'Energy Consumption - LivingQuality', source: 'Energy Consumption', target: 'LivingQuality', value: 0.685 },
+                { id: 'Happiness - Pollution', source: 'Happiness', target: 'Pollution', value: -0.703 },
+                { id: 'Happiness - Fiance', source: 'Happiness', target: 'Finance', value: 0.223 },
+                { id: 'Happiness - LivingQuality', source: 'Happiness', target: 'LivingQuality', value: 0.821 }
+            ]
+        };
+
+        const subData = {
+            Pollution: [
+                { id: 'Air Pollutants', group: 'subfactor', fx: 120 }
+            ],
+            Finance: [
+                { id: 'GDP', group: 'subfactor', fx: 120 },
+                { id: 'Unemployment Rate', group: 'subfactor' , fx: 120},
+                { id: 'CPI', group: 'subfactor', fx: 120 }
+            ],
+            LivingQuality: [
+                { id: 'HDI', group: 'subfactor', fx: 120}
+            ]
+        };
+
+        const subLinks = {
+            Pollution: [
+                { id: 'Energy Consumption - Air Pollutants', source: 'Energy Consumption', target: 'Air Pollutants', value: 0.163 },
+                { id: 'Happiness - Air Pollutants', source: 'Happiness', target: 'Air Pollutants', value: -0.703 }
+            ],
+            Finance: [
+                { id: 'Energy Consumption - GDP', source: 'Energy Consumption', target: 'GDP', value: 0.983 }, 
+                { id: 'Energy Consumption - Unemployment Rate', source: 'Energy Consumption', target: 'Unemployment Rate', value: -0.102 },
+                { id: 'Energy Consumption - CPI', source: 'Energy Consumption', target: 'CPI', value: 0.016 },
+                { id: 'Happiness - GDP per capita', source: 'Happiness', target: 'GDP', value: 0.782 },
+                { id: 'Happiness - Unemployment Rate', source: 'Happiness', target: 'Unemployment Rate', value: 0.018 },
+                { id: 'Happiness - CPI', source: 'Happiness', target: 'CPI', value: -0.303 }
+            ],
+            LivingQuality: [
+                { id: 'Energy Consumption per capita - HDI', source: 'Energy Consumption', target: 'HDI', value: 0.685 },
+                { id: 'Happiness - HDI', source: 'Happiness', target: 'HDI', value: 0.821 }
+            ]
+        };
+
+        const svg = d3.select("svg"),
+            width = +svg.attr("width"),
+            height = +svg.attr("height");
+
+        const color = d => {
+            switch (d.id) {
+                case 'Energy Consumption': return '#228d84';
+                case 'Happiness': return '#bf5c0d';
+                case 'Pollution':
+                case 'Finance':
+                case 'LivingQuality': return '#7030a0';
+                default: return '#dac8e8';
+            }
+        };
+
+        const simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(d => d.id).distance(80)) // Increase distance
+            // .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("collision", d3.forceCollide().radius(16)); // Add collision force
+
+        let data = JSON.parse(JSON.stringify(initialData));
+
+        const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+        function update(data) {
+            svg.selectAll("*").remove();
+
+            const link = svg.append("g")
+                .attr("class", "links")
+                .selectAll("line")
+                .data(data.links)
+                .enter().append("line")
+                .attr("class", "link")
+                .style("stroke-width", d => Math.abs(d.value) * 5)
+                .style("stroke", d => {
+                    if (d.value > 0.2) return "green";
+                    else if (d.value < -0.2) return "red";
+                    else return "grey";
+                })
+
+            const linkOverlay = svg.append("g")
+                .attr("class", "link-overlays")
+                .selectAll("line")
+                .data(data.links)
+                .enter().append("line")
+                .attr("class", "link-overlay")
+                .style("stroke-width", 10) 
+                .style("stroke", "transparent")
+                .on("mouseover", function(event, d) {
+                    tooltip.transition().duration(200).style("opacity", .9);
+                    tooltip.html(`${d.id}<br>Correlation (Pearson): ${d.value}`)
+                        .style("left", (event.pageX + 5) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    tooltip.transition().duration(500).style("opacity", 0);
+                });
+
+
+            const node = svg.append("g")
+                .attr("class", "nodes")
+                .selectAll("circle")
+                .data(data.nodes)
+                .enter().append("circle")
+                .attr("class", "node")
+                .attr("r", 5)
+                .attr("fill", color)
+                .on("click", clicked)
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    // .on("drag", dragged)
+                    .on("end", dragended));
+
+            node.append("title")
+                .text(d => d.id);
+
+            const label = svg.append("g")
+                .attr("class", "labels")
+                .selectAll("text")
+                .data(data.nodes)
+                .enter().append("text")
+                .attr("class", "label")
+                .attr("dy", -10)
+                .attr("dx", -20)
+                .attr("font-size", "8px")
+                .text(d => d.id);
+
+            simulation
+                .nodes(data.nodes)
+                .on("tick", ticked);
+
+            simulation.force("link")
+                .links(data.links);
+
+            function ticked() {
+                link
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
+                
+                linkOverlay
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
+
+                node
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y);
+
+                label
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y);
+            }
+        }
+
+        function clicked(event, d) {
+            if (d.group === 'overview' && subData[d.id]) {
+                // Expand
+                data.nodes = data.nodes.filter(n => n.id !== d.id).concat(subData[d.id]);
+                data.links = data.links.filter(l => l.source.id !== d.id && l.target.id !== d.id).concat(subLinks[d.id]);
+                // console.log(data.nodes);
+                // console.log(data.links);
+            } 
+                // Collapse
+            else if (d.group === 'subfactor') {
+                const overviewNode = initialData.nodes.find(n => subData[n.id] && subData[n.id].some(sub => sub.id === d.id));
+                const overviewLinks = initialData.links.filter(l => l.source === overviewNode.id || l.target === overviewNode.id);
+                // console.log(overviewNode);
+                // console.log(overviewLinks);
+                if (overviewNode) {
+                    const subNodeIds = subData[overviewNode.id].map(sub => sub.id);
+                    data.nodes = data.nodes.filter(n => !subNodeIds.includes(n.id)).concat(overviewNode);
+                    data.links = data.links.filter(l => !subNodeIds.includes(l.source.id) && !subNodeIds.includes(l.target.id)).concat(overviewLinks);
+                    // console.log(data.nodes);
+                    // console.log(data.links);
+                }
+            }
+            update(data);
+        }
+
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        update(data);
+    </script>
+</body>
+</html>
